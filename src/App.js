@@ -1,25 +1,34 @@
-import logo from './logo.svg';
+import React, {useEffect, useState} from 'react';
 import './App.css';
+import Tweet from './Tweet';
+import axios from 'axios';
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 function App() {
+  const [data, setData] = useState([])
+  const fetchData = async () => {
+    try{
+      const response = await axios.get('https://coursera-twitter-api.herokuapp.com/tweets')
+      setData(response.data)
+    }
+    catch(error){
+      console.error(error);
+
+    }
+
+  }
+  useEffect(() => {
+    console.log()
+    fetchData()
+  }
+
+  )
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+   <div style={{background: '#111111', padding: '30px'}}>
+    {data.map(tweet => <Tweet key={tweet.id} {...tweet}/>)}
+   </div>
+  
   );
-}
+  }
 
 export default App;
